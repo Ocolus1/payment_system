@@ -1,0 +1,169 @@
+{% extends 'pay/base.html' %}{% load static %}
+{% block content %}
+<div class="main_div ">
+    <main class="the_div shadow p-3 mb-5 bg-body rounded">
+        <div class="img_div text-center mb-5">
+            <img src="{% static 'pay/img/iesa_logo.jpg' %}" alt="iesa logo"  class="iesa_logo">
+            <h2 class="my-2">IESA DUES</h2>
+            <div class="form-text">BY IESA UI</div>
+            <div class="description p-1">
+                Pay your Industrial Engineering Student Association dues from the
+                comfort of your home.
+            </div>
+        </div>
+        <form >
+            {% if exist == "absent" %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <div>User does not exist!</div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endif %}
+            <div class="mb-4">
+                <label for="matric" class="form-label mb-2">Matric Number</label>
+                <input type="text" class="form-control form-control-sm" 
+                id="matric" name="matric_no" value="{{user.matric_no}}" readonly>
+            </div>
+            <div class="mb-4">
+                <label for="name" class="form-label mb-2">Name</label>
+                <input type="text" class="form-control form-control-sm" 
+                id="name" name="name" value="{{user.name}}" readonly>
+            </div>
+            <div class="mb-4">
+                <label for="email" class="form-label mb-2">Email</label>
+                <input type="email" class="form-control form-control-sm" 
+                id="email" name="email" value="{{user.email}}" readonly>
+            </div>
+            <div class="mb-4">
+                <label for="amount" class="form-label mb-2">Amount</label>
+                <input type="text" class="form-control form-control-sm" 
+                id="amount" name="amount" value="{{user.amount}}" readonly>
+            </div>
+            <div class="d-grid gap-2 my-4">
+                <!-- <button type="button" onclick="sendData()" class="btn btn-primary">Continue</button> -->
+                <button type="button" onclick="makePayment()" class="btn btn-primary">Continue</button>
+            </div>
+            <div class="d-grid gap-2 my-4">
+                <a href="{% url 'index' %}" class="btn btn-primary-outline nav-link">
+                    <i class="bi bi-arrow-90deg-left"></i> Go Back
+                </a>
+            </div>
+        </form>
+        
+    </main>
+</div>
+<script src="https://checkout.flutterwave.com/v3.js"></script>
+  <!-- <button type="button" onClick="makePayment()">Pay Now</button> -->
+<script type="text/javascript">
+    async function sendData() { 
+        let now = new Date();
+        let url = "https://api.flutterwave.com/v3/payments" 
+        let data = {
+            "tx_ref" : now,
+            "amount": "{{user.amount}}",
+            "currency": "NGN",
+            "payment_options" : "card",
+            "redirect_url" : "http://localhost:8000/process",
+            "customer" : {
+                "email" : "{{user.email}}",
+                "name" : "{{user.name}}",
+                "level" : "{{user.level}}"
+            },
+            "meta" : {
+                "price" : "{{user.amount}}"
+            },
+            "customizations" : {
+                "title" : "Payment for IESA dues",
+                "description" : "Industrial Engineering Student Association dues"
+            }
+        }
+        let body = JSON.stringify(data) 
+        let res = await fetch(url, { 
+            method: 'POST', 
+            // mode: 'no-cors',
+            headers: { 
+                "Accept": "application/json", 
+                'Content-Type': 'application/json',
+                "Authorization" : "Bearer FLWPUBK_TEST-0560043d7587ec4cfce9cf607356b7dd-X",
+            }, 
+            body: body, 
+        })
+        .then(response => response.json())
+        .then(json => console.log(json))
+        .catch(e => console.error(e));
+        console.log(res, "dear")
+    } 
+
+    // function makePayment() {
+    //     let now = new Date();
+    //     FlutterwaveCheckout({
+    //         public_key: "FLWPUBK_TEST-0560043d7587ec4cfce9cf607356b7dd-X",
+    //         tx_ref: now,
+    //         amount: "{{user.amount}}",
+    //         currency: "USD",
+    //         country: "US",
+    //         payment_options: "card",
+    //         redirect_url: "http://localhost:8000/process",
+    //         meta: {
+    //             price : "{{user.amount}}"
+    //         },
+    //         customer: {
+    //             email : "{{user.email}}",
+    //             name : "{{user.name}}",
+    //             level : "{{user.level}}"
+    //         },
+    //         callback: function (data) {
+    //             console.log(data);
+    //         },
+    //         onclose: function() {
+    //             // close modal
+    //         },
+    //         customizations : {
+    //             title : "Payment for IESA dues",
+    //             description : "Industrial Engineering Student Association dues"
+    //         },
+    //     });
+    // }
+
+    function makePayment() {
+        let now = new Date();
+        FlutterwaveCheckout({
+            public_key: "FLWPUBK_TEST-0560043d7587ec4cfce9cf607356b7dd-X",
+            tx_ref: now,
+            amount: "{{user.amount}}",
+            currency: "NGN",
+            meta: {
+                price : "{{user.amount}}"
+            },
+            customer: {
+                email : "{{user.email}}",
+                name : "{{user.name}}",
+                level : "{{user.level}}"
+            },
+            callback: function (data) { 
+                // specified callback function
+                console.log(data);
+                if (data.status == "successful") {
+                    let url = `https://api.flutterwave.com/v3/transactions/${data.transaction_id}/verify`
+                    let res = fetch(url, { 
+                        method: 'GET', 
+                        headers: { 
+                            "Accept": "application/json", 
+                            'Content-Type': 'application/json',
+                            "Authorization" : "Bearer FLWSECK_TEST-f3bea5571c9e44902cf2682c621e3d89-X",
+                        }, 
+                    })
+                    .then(response => response.json())
+                    .then(req => console.log(req))
+                    .catch(e => console.error(e));
+                } else {
+                    window.location.href = "{% url 'index' %}"
+                }
+            },
+            customizations : {
+                title : "Payment for IESA dues",
+                description : "Industrial Engineering Student Association dues"
+            },
+        });
+    }
+</script>
+{% endblock content %}

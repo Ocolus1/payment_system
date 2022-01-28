@@ -1,0 +1,36 @@
+{% extends 'pay/base.html' %}{% load static %}
+{% block content %}
+<div class="main_div ">
+    <main class="the_div shadow p-3 mb-5 bg-body rounded">
+        <div class="img_div text-center mb-5">
+            <img src="{% static 'pay/img/iesa_logo.jpg' %}" alt="iesa logo"  class="iesa_logo">
+            <h2 class="my-2">IESA DUES</h2>
+            <div class="form-text">BY IESA UI</div>
+            <div class="description p-1">
+                Pay your Industrial Engineering Student Association dues from the
+                comfort of your home.
+            </div>
+        </div>
+        <form method="post">
+            {% csrf_token %}
+            {% if exist == "absent" %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <div>User does not exist!</div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endif %}
+            <div class="mb-4">
+                <label for="matric" class="form-label mb-2">Matric Number</label>
+                <input type="text" class="form-control form-control-sm" 
+                id="matric" name="matric_no" aria-describedby="Your matric number" required>
+                <div id="matircHelp" class="form-text">Enter your matric no.</div>
+            </div>
+            <div class="d-grid gap-2 my-4">
+                <button type="submit" class="btn btn-primary">Continue</button>
+            </div>
+        </form>
+        
+    </main>
+</div>
+
+{% endblock content %}
