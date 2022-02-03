@@ -1,0 +1,321 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Bootstrap CSS -->
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+            crossorigin="anonymous"
+        >
+        <link rel="shortcut icon" type="image/jpg" href="{% static 'pay/img/logo.jpg' %}">
+        <title>Cypherspot - Payment Platform Receipt</title>
+        <style>
+        body {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        .rec_div {
+            width: 100%;
+            margin: 2% auto;
+            padding: .5rem 2rem;
+        }
+        .rec_logo, .iesa_logo {
+            width: 10%;
+            height: 10%;
+        }
+
+        .rec_sign {
+            width: 14%;
+            height: 14%;
+        }
+
+        .rec_right {
+            text-align: right;
+        }
+        th, td {
+            font-size: 90%;
+        }
+
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+
+
+        @media screen and (min-width: 576px) {
+            .rec_div {
+                width: 70%;
+            }
+        }
+
+        @media screen and (min-width: 768px) {   
+            .rec_div {
+                width: 60%;
+            }
+
+        }
+
+        @media screen and (min-width: 992px) {
+            .rec_div {
+                width: 50%;
+            }
+        }
+        </style>
+    </head>
+    <body>
+        <div class="rec_div">
+            <div class="rec_div_in text-center">
+                <h5 class="py-3">{{ dept.name }}</h5>
+                <img src="{{ dept.avatar.url }}" alt="receipt logo" class="rec_logo py-1">
+                <div style="margin-left: -10px;">
+                    <svg width="64" height="64">
+                        <path style="fill:#feffff; stroke:none;" d="M0 0L0 28C12.0293 26.3225 2.06163 22.0617 5.05941 16.2377C8.58578 9.38667 17.3953 18.0055 14 5C18.3635 3.96334 20.0889 4.57677 23 8L28 7L29 0L0 0z"/>
+                        <path style="fill:#0c2512; stroke:none;" d="M29 0C28.4762 6.92253 24.4639 8.34861 20 3L14 5C15.1409 12.2429 13.8323 15.3906 6 13L7.08333 24.8665L0 35C6.92254 35.5238 8.34861 39.5361 3 44L5 50C12.4692 48.8234 14.9797 50.1683 13 58L24.8519 56.9167L35 64C35.2376 56.7438 39.3316 55.3894 44 61L50 59C48.8234 51.5308 50.1683 49.0203 58 51C60.4047 45.9198 55.3648 42.171 57.1752 38.3133C58.5369 35.4116 64.0492 36.2457 63.534 32.0887C62.7883 26.0721 52.6643 27.0524 61 20L59 14C51.7571 15.1409 48.6094 13.8323 51 6C44.0529 2.88147 36.3821 11.7325 36 0L29 0z"/>
+                        <path style="fill:#ffffff; stroke:none;" d="M36 0C37.1766 12.851 43.6487 1.08611 48.5571 5.58179C51.1467 7.95364 48.127 11.9388 50.6219 14.3534C53.0126 16.6671 58.2085 13.3127 59.5039 17.1767C60.6039 20.4582 55.8643 22.4563 56.8904 25.7361C57.7493 28.4812 61.688 28.6776 64 29L64 0L36 0z"/>
+                        <path style="fill:#7a887b; stroke:none;" d="M17 3L18 4L17 3z"/>
+                        <path style="fill:#9eac9f; stroke:none;" d="M28 3L28 6L29 6L28 3z"/>
+                        <path style="fill:#79857b; stroke:none;" d="M45.6667 3.33333L46.3333 3.66667L45.6667 3.33333z"/>
+                        <path style="fill:#97a99b; stroke:none;" d="M36 4L36 7L37 7L36 4z"/>
+                        <path style="fill:#6a746b; stroke:none;" d="M44 4L45 5L44 4z"/>
+                        <path style="fill:#8b978b; stroke:none;" d="M48 4L49 5L48 4z"/>
+                        <path style="fill:#7e8b81; stroke:none;" d="M21 5L22 6L21 5z"/>
+                        <path style="fill:#959f96; stroke:none;" d="M43 5L44 6L43 5z"/>
+                        <path style="fill:#657165; stroke:none;" d="M25.6667 7.33333L26.3333 7.66667L25.6667 7.33333z"/>
+                        <path style="fill:#909d93; stroke:none;" d="M37.6667 7.33333L38.3333 7.66667L37.6667 7.33333z"/>
+                        <path style="fill:#bbc4bf; stroke:none;" d="M50.3333 7.66667L50.6667 8.33333L50.3333 7.66667z"/>
+                        <path style="fill:#b2c7b8; stroke:none;" d="M24 11L24 12L28 10L24 11z"/>
+                        <path style="fill:#f4fff2; stroke:none;" d="M28 10L28 11L36 11L28 10z"/>
+                        <path style="fill:#a8b4aa; stroke:none;" d="M32 12L32 13L37 12L43 16C42.9833 19.2564 44.757 18.893 47 17L51 21C47.2147 13.7242 40.1142 8.74893 32 12z"/>
+                        <path style="fill:#79927f; stroke:none;" d="M23 11L24 12L23 11z"/>
+                        <path style="fill:#7b877b; stroke:none;" d="M15 19L15 20L18 22L18 18L21 19L21 16L32 13L32 11C24.9224 11.5789 20.1223 14.144 15 19z"/>
+                        <path style="fill:#dfeddc; stroke:none;" d="M20 13L20 14L24 13L20 13z"/>
+                        <path style="fill:#3e4c3d; stroke:none;" d="M34 12L35 13L34 12z"/>
+                        <path style="fill:#d6e7d7; stroke:none;" d="M21 16L21 17L39 15L39 14L37 12L21 16z"/>
+                        <path style="fill:#757e79; stroke:none;" d="M7 13L8 14L7 13z"/>
+                        <path style="fill:#d5ead9; stroke:none;" d="M13 21L20 14L13 21z"/>
+                        <path style="fill:#334b3b; stroke:none;" d="M28 14L28 15L36 15L28 14z"/>
+                        <path style="fill:#97a199; stroke:none;" d="M4 15L5 16L4 15z"/>
+                        <path style="fill:#737f71; stroke:none;" d="M25 15L26 16L25 15z"/>
+                        <path style="fill:#08260c; stroke:none;" d="M19 21C24.3987 19.0515 27.3903 19.2653 31 24L33 24C37.0604 18.8815 40.4874 19.2449 46 22C41.1178 12.9705 24.3946 11.9231 19 21z"/>
+                        <path style="fill:#697368; stroke:none;" d="M38 15L39 16L38 15z"/>
+                        <path style="fill:#eff5eb; stroke:none;" d="M39.6667 15.3333L40.3333 15.6667L39.6667 15.3333z"/>
+                        <path style="fill:#889289; stroke:none;" d="M59 15L60 16L59 15z"/>
+                        <path style="fill:#f5fff6; stroke:none;" d="M41.6667 16.3333L42.3333 16.6667L41.6667 16.3333z"/>
+                        <path style="fill:#737a72; stroke:none;" d="M3.33333 17.6667L3.66667 18.3333L3.33333 17.6667z"/>
+                        <path style="fill:#6b766e; stroke:none;" d="M46.3333 17.6667L46.6667 18.3333L46.3333 17.6667z"/>
+                        <path style="fill:#647469; stroke:none;" d="M60 17L61 18L60 17z"/>
+                        <path style="fill:#ebf5ec; stroke:none;" d="M18 18L18 20L20 18L18 18z"/>
+                        <path style="fill:#f6fff9; stroke:none;" d="M21 20L21 21L27 29L31 29C30.84 22.3878 28.0985 18.2305 21 20z"/>
+                        <path style="fill:#566754; stroke:none;" d="M26.6667 19.3333L27.3333 19.6667L26.6667 19.3333z"/>
+                        <path style="fill:#f9fff8; stroke:none;" d="M37.1088 19.7577C29.4992 22.7631 33.8532 35.3711 41.9414 32.3812C49.6008 29.5497 45.2252 16.5522 37.1088 19.7577z"/>
+                        <path style="fill:#f8fffb; stroke:none;" d="M45 19L48 22L45 19z"/>
+                        <path style="fill:#959f96; stroke:none;" d="M5 20L6 21L5 20z"/>
+                        <path style="fill:#bcc8bc; stroke:none;" d="M12 24L15 22L14 25L16 20L12 24z"/>
+                        <path style="fill:#c8c9c4; stroke:none;" d="M19 22L22 22L21 20L19 22z"/>
+                        <path style="fill:#889689; stroke:none;" d="M48 20L54 32L54 25C51.2046 25 51.7348 23.5197 52 21L48 20z"/>
+                        <path style="fill:#53544f; stroke:none;" d="M18 21L16 24L20 22L18 21z"/>
+                        <path style="fill:#8e9991; stroke:none;" d="M46 21L47 22L46 21z"/>
+                        <path style="fill:#879389; stroke:none;" d="M58 21L59 22L58 21z"/>
+                        <path style="fill:#7a867c; stroke:none;" d="M14 22L12 27L13 27L14 22z"/>
+                        <path style="fill:#252726; stroke:none;" d="M20 22L20 23L24 25L25 24L20 22z"/>
+                        <path style="fill:#99a99e; stroke:none;" d="M30 22L31 23L30 22z"/>
+                        <path style="fill:#98a498; stroke:none;" d="M33 22L34 23L33 22z"/>
+                        <path style="fill:#adadab; stroke:none;" d="M36.3333 22.6667L36.6667 23.3333L36.3333 22.6667z"/>
+                        <path style="fill:#959394; stroke:none;" d="M38.3333 22.6667L38.6667 23.3333L38.3333 22.6667z"/>
+                        <path style="fill:#2d282c; stroke:none;" d="M39 22L40 31L41 31L42 22L39 22z"/>
+                        <path style="fill:#06290b; stroke:none;" d="M46 22C46.9753 28.3664 43.9977 31.9595 38 34L38 43L35 42L36 45L31 44C24.7231 44.0023 25.0998 38.9369 26 34C20.8631 32.554 18.0477 29.1921 17 24L16 24C15.0694 27.9089 14.6394 31.9828 15.189 36C19.0298 64.072 64.6089 41.8599 46 22z"/>
+                        <path style="fill:#d8e4d8; stroke:none;" d="M47 22L51 28L47 22z"/>
+                        <path style="fill:#cfe1d1; stroke:none;" d="M51 22L52 26L53 26L51 22z"/>
+                        <path style="fill:#799181; stroke:none;" d="M11 23L12 24L11 23z"/>
+                        <path style="fill:#fafff9; stroke:none;" d="M18 23L19 31L23 27L23 24L18 23z"/>
+                        <path style="fill:#747371; stroke:none;" d="M21 23L22 24L21 23z"/>
+                        <path style="fill:#140f13; stroke:none;" d="M37 23L37 29L38 29L37 23z"/>
+                        <path style="fill:#bfd2be; stroke:none;" d="M11 24C10.0073 28.1697 8.45796 34.9048 12 38L13 29L11 24z"/>
+                        <path style="fill:#a9b9ac; stroke:none;" d="M17 24L17 28L18 28L17 24z"/>
+                        <path style="fill:#5e5c5f; stroke:none;" d="M23 27L26 28L27 28L26 24L23 27z"/>
+                        <path style="fill:#6f766f; stroke:none;" d="M31.6667 24.3333L32.3333 24.6667L31.6667 24.3333z"/>
+                        <path style="fill:#a8b8ad; stroke:none;" d="M46 24L46 29L47 29L46 24z"/>
+                        <path style="fill:#616f62; stroke:none;" d="M7.33333 25.6667L7.66667 26.3333L7.33333 25.6667z"/>
+                        <path style="fill:#f8fef4; stroke:none;" d="M14 25L11 38C14.0314 42.1683 19.0421 48.1342 24 49.8519C39.2675 55.1413 53.2675 43.8884 51 28L50 28C49.9556 43.4849 33.921 57.7157 20.1049 44.7863C13.2034 38.3276 16.3012 32.4816 14 25z"/>
+                        <path style="fill:#757f76; stroke:none;" d="M15 25L16 26L15 25z"/>
+                        <path style="fill:#a0ada3; stroke:none;" d="M31 25L31 28L33 28L33 25L31 25z"/>
+                        <path style="fill:#080705; stroke:none;" d="M25 26L21 30L21 31L27 31L25 26z"/>
+                        <path style="fill:#b5bfb6; stroke:none;" d="M3 27L3 28L7 28L3 27z"/>
+                        <path style="fill:#41413f; stroke:none;" d="M20 31L25 27L20 31z"/>
+                        <path style="fill:#daebdb; stroke:none;" d="M53 27L53 31L54 31L53 27z"/>
+                        <path style="fill:#8e988d; stroke:none;" d="M0 28L1 29L0 28z"/>
+                        <path style="fill:#3f5445; stroke:none;" d="M14 28L14 35L15 35L14 28z"/>
+                        <path style="fill:#47574c; stroke:none;" d="M31.6667 28.3333L32.3333 28.6667L31.6667 28.3333z"/>
+                        <path style="fill:#848285; stroke:none;" d="M36 28L39 30L39 29L36 28z"/>
+                        <path style="fill:#344c3c; stroke:none;" d="M49 28L49 35L50 35L49 28z"/>
+                        <path style="fill:#9ba99c; stroke:none;" d="M58 28L58 29L61 29L58 28z"/>
+                        <path style="fill:#606e61; stroke:none;" d="M11.6667 29.3333L12.3333 29.6667L11.6667 29.3333z"/>
+                        <path style="fill:#c9d9cc; stroke:none;" d="M27 31L31 30L27 31z"/>
+                        <path style="fill:#102715; stroke:none;" d="M30 32L35 32C32.8484 29.8536 31.9243 29.5395 30 32z"/>
+                        <path style="fill:#354d37; stroke:none;" d="M54 29L54 35L55 35L54 29z"/>
+                        <path style="fill:#6a766a; stroke:none;" d="M63 29L64 30L63 29z"/>
+                        <path style="fill:#374a36; stroke:none;" d="M9 30L9 34L10 34L9 30z"/>
+                        <path style="fill:#7e8e84; stroke:none;" d="M11 30L12 39L13 39L11 30z"/>
+                        <path style="fill:#fbfffd; stroke:none;" d="M28 30L20 31L20 32C22.2302 32.8152 29.4904 34.0074 28 30z"/>
+                        <path style="fill:#5f6b61; stroke:none;" d="M29 30L29 32L31 30L29 30z"/>
+                        <path style="fill:#485d4e; stroke:none;" d="M11 32L11 37L12 37L11 32z"/>
+                        <path style="fill:#a3aea8; stroke:none;" d="M27 34L37 34C34.5516 31.1981 29.4484 31.1981 27 34z"/>
+                        <path style="fill:#c0d3bf; stroke:none;" d="M52 32L53 37L54 37L52 32z"/>
+                        <path style="fill:#526456; stroke:none;" d="M22 33L22 34L27 35L22 33z"/>
+                        <path style="fill:#fffef9; stroke:none;" d="M28 33L25 42L30 41L28 33z"/>
+                        <path style="fill:#150a10; stroke:none;" d="M30 33L30 41L34 34L30 33z"/>
+                        <path style="fill:#3a3a3a; stroke:none;" d="M31 33L31 34L34 34L31 33z"/>
+                        <path style="fill:#fcfff8; stroke:none;" d="M34 33L34 41L38 43C39.3381 38.285 38.4747 35.2569 34 33z"/>
+                        <path style="fill:#556558; stroke:none;" d="M37 35L41 34L37 35z"/>
+                        <path style="fill:#869e8e; stroke:none;" d="M51 33L51 39L54 38L53 33L51 33z"/>
+                        <path style="fill:#7a7478; stroke:none;" d="M34 34L34 38L35 38L34 34z"/>
+                        <path style="fill:#feffff; stroke:none;" d="M0 35L0 64L28 64C26.8221 51.1353 20.2711 62.9607 15.5231 58.4182C13.0533 56.0553 15.8819 52.0384 13.3812 49.6466C10.0224 46.4341 -1.4052 48.9572 8 41L7 36L0 35z"/>
+                        <path style="fill:#98a498; stroke:none;" d="M3 35L3 36L6 36L3 35z"/>
+                        <path style="fill:#bfc9c0; stroke:none;" d="M14.3333 35.6667L14.6667 36.3333L14.3333 35.6667z"/>
+                        <path style="fill:#aebeb3; stroke:none;" d="M49.3333 35.6667L49.6667 36.3333L49.3333 35.6667z"/>
+                        <path style="fill:#999c95; stroke:none;" d="M63 35L64 36L63 35z"/>
+                        <path style="fill:#acb8aa; stroke:none;" d="M57 36L57 37L60 37L57 36z"/>
+                        <path style="fill:#fffeff; stroke:none;" d="M35 64L64 64L64 36C51.1353 37.1779 62.9607 43.7289 58.4182 48.4769C56.0553 50.9467 52.0384 48.1181 49.6466 50.6188C47.3552 53.0145 50.6684 58.1903 46.848 59.5039C43.598 60.6213 41.5969 55.8019 38.2886 56.7515C35.5056 57.5504 35.319 61.6999 35 64z"/>
+                        <path style="fill:#a5ada2; stroke:none;" d="M7.33333 37.6667L7.66667 38.3333L7.33333 37.6667z"/>
+                        <path style="fill:#96a296; stroke:none;" d="M56.3333 37.6667L56.6667 38.3333L56.3333 37.6667z"/>
+                        <path style="fill:#7c817a; stroke:none;" d="M15 38L16 39L15 38z"/>
+                        <path style="fill:#8c8a8d; stroke:none;" d="M29 38L30 39L29 38z"/>
+                        <path style="fill:#6d776e; stroke:none;" d="M48 38L49 39L48 38z"/>
+                        <path style="fill:#b8bbb2; stroke:none;" d="M52 38L34 52C40.9902 56.321 54.0432 45.6976 52 38z"/>
+                        <path style="fill:#39423f; stroke:none;" d="M32 39L25 42L25 43L32 44L31 47L36 45L32 39z"/>
+                        <path style="fill:#787a79; stroke:none;" d="M33 39L36 42L36 41L33 39z"/>
+                        <path style="fill:#c2ccc3; stroke:none;" d="M11 40C14.293 46.9198 20.657 54.2109 29 53L29 51L11 40z"/>
+                        <path style="fill:#959593; stroke:none;" d="M27.6667 41.3333L28.3333 41.6667L27.6667 41.3333z"/>
+                        <path style="fill:#9aa69c; stroke:none;" d="M5 42L6 43L5 42z"/>
+                        <path style="fill:#919d8f; stroke:none;" d="M17 42L18 43L17 42z"/>
+                        <path style="fill:#98a496; stroke:none;" d="M46 42L47 43L46 42z"/>
+                        <path style="fill:#6c786c; stroke:none;" d="M18 43L19 44L18 43z"/>
+                        <path style="fill:#8b978b; stroke:none;" d="M58 43L59 44L58 43z"/>
+                        <path style="fill:#727a6f; stroke:none;" d="M31.3333 44.6667L31.6667 45.3333L31.3333 44.6667z"/>
+                        <path style="fill:#667b6a; stroke:none;" d="M50 44L51 45L50 44z"/>
+                        <path style="fill:#6e7c6f; stroke:none;" d="M20 45L21 46L20 45z"/>
+                        <path style="fill:#747770; stroke:none;" d="M60.3333 45.6667L60.6667 46.3333L60.3333 45.6667z"/>
+                        <path style="fill:#758177; stroke:none;" d="M3 46L4 47L3 46z"/>
+                        <path style="fill:#98a496; stroke:none;" d="M21 46L22 47L21 46z"/>
+                        <path style="fill:#98a697; stroke:none;" d="M42 46L43 47L42 46z"/>
+                        <path style="fill:#97a09b; stroke:none;" d="M4 48L5 49L4 48z"/>
+                        <path style="fill:#8c978f; stroke:none;" d="M59 48L60 49L59 48z"/>
+                        <path style="fill:#374c39; stroke:none;" d="M28 49L28 50L35 50L28 49z"/>
+                        <path style="fill:#bfccc5; stroke:none;" d="M35.6667 49.3333L36.3333 49.6667L35.6667 49.3333z"/>
+                        <path style="fill:#e3dbd9; stroke:none;" d="M28 54L36 54L36 53L35 51L28 54z"/>
+                        <path style="fill:#9c9b96; stroke:none;" d="M30 52L30 53L33 53L30 52z"/>
+                        <path style="fill:#6d776c; stroke:none;" d="M25.6667 56.3333L26.3333 56.6667L25.6667 56.3333z"/>
+                        <path style="fill:#b8c5b4; stroke:none;" d="M27 57L27 60L28 60L27 57z"/>
+                        <path style="fill:#697766; stroke:none;" d="M35.3333 57.6667L35.6667 58.3333L35.3333 57.6667z"/>
+                        <path style="fill:#94a198; stroke:none;" d="M20 58L21 59L20 58z"/>
+                        <path style="fill:#9da8a2; stroke:none;" d="M15 59L16 60L15 59z"/>
+                        <path style="fill:#6d7872; stroke:none;" d="M19 59L20 60L19 59z"/>
+                        <path style="fill:#b3c1b4; stroke:none;" d="M35.3333 59.6667L35.6667 60.3333L35.3333 59.6667z"/>
+                        <path style="fill:#949f97; stroke:none;" d="M48 59L49 60L48 59z"/>
+                        <path style="fill:#7a7f7b; stroke:none;" d="M17.6667 60.3333L18.3333 60.6667L17.6667 60.3333z"/>
+                        <path style="fill:#737f71; stroke:none;" d="M46 60L47 61L46 60z"/>
+                        <path style="fill:#a1a3a2; stroke:none;" d="M28 63L29 64L28 63z"/>
+                    </svg>
+                </div>
+                <h6 class="py-2">PAYMENT RECEIPT</h6>
+            </div>
+            <div class="mt-4">
+                <table>
+                    <p class="caption">STUDENT INFORMATION</p>
+                    <tbody>
+                        <tr>
+                            <th scope="row">FULL NAME</th>
+                            <td>{{ user.name }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">MATRIC NO</th>
+                            <td>{{ user.matric_no }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">LEVEL</th>
+                            <td>{{ user.level }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="mt-5">
+                <table class="">
+                    <p class="caption">PAYMENT INFORMATION</p>
+                    <tbody>
+                        <tr>
+                            <th scope="row">AMOUNT PAID</th>
+                            <td>{{ amount }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">PAYMENT REFERENCE</th>
+                            <td>{{ user.ref }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">PURPOSE</th>
+                            <td>DUES</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">SESSION</th>
+                            <td>2021/2022</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">DATE/TIME PAID</th>
+                            <td>{{ user.paid_date }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="py-3">
+                <h6>Total Amount Paid : NGN{{amount}}</h6>
+            </div>
+            <div class="rec_right">
+                <img src="{{ dept.sign.url }}" alt="receipt sign" class="rec_sign">
+                <svg width="100" height="100">
+                    <path style="fill:#8d8a85; stroke:none;" d="M0 0L0 82C6.04184 82.193 14.5255 88.7551 17 80L6 81C7.929 76.7947 11.9565 73.5868 16 77L17 77L17 74L18 74L18 77L19 77L26.9367 61.9498L24.2137 48.9992L24 33L41 33L44 23L37 22C41.8381 11.9866 49.6941 4.28857 60 1L41 0L0 0z"/>
+                    <path style="fill:#7c7771; stroke:none;" d="M37 22L44 23L47 26L45 35C49.4212 34.9634 56.0653 35.1814 59.6968 32.2585C66.4246 26.8433 63 7.76804 63 0C51.7383 2.31324 40.4625 10.2877 37 22z"/>
+                    <path style="fill:#95918e; stroke:none;" d="M63 0C63 17.0296 67.0214 34.5455 45 35L45 43L46 43L46 38L47 38L47 41L61 38L61 49C67.5004 56.1033 54.5374 56.9995 50 57L50 53L49 53L45 57L44 35L43 35L37 37L38 52L31 49L28 78L19 80L19 81L21 85L27 84L27 87L32 87L32 84C36.254 84 44.9336 84.9766 46 80L47 80L47 85L56 86L55 78L60 74L61 74L60 91L61 97L91 76L89 74L90 69L83 69C87.249 64.6611 94.328 67.9705 98.142 63.4861C100.654 60.5328 101.109 52.6891 98.3966 49.7639C91.0728 41.8664 73.8789 35.4737 64 31L64 30L83.0394 28.3171L94 30L95 33C101.975 30.0775 103.27 7.06493 97 3L99 8L95 9L96 14L88 16L88 21L73 21L73 26L71 24L66 25C68.3311 15.6437 77.1218 0.0499115 63 0z"/>
+                    <path style="fill:#726d67; stroke:none;" d="M71 0L66 25L73 26L73 21L88 21L88 16L96 14L95 9L99 8L97 3L100 4L100 0L71 0z"/>
+                    <path style="fill:#5d5958; stroke:none;" d="M41 33C33.9461 32.4931 30.6564 28.8094 24 33L24.1049 48.9992L27 76L28 76L31 49L38 52L37 37L43 35L44 35L44 54L45 54L47 38L46 38L46 43L45 43L47 26C42.2172 26.3814 41.2552 28.393 41 33z"/>
+                    <path style="fill:#a7a3a0; stroke:none;" d="M64 30L64 31L100 50L100 31L95 33L94 30L64 30z"/>
+                    <path style="fill:#938f90; stroke:none;" d="M32 33C31.2913 35.6784 28.537 42.4104 32 43L31 48L34 49C35.4965 45.82 37.42 41.9471 33 41L33 40L36 40L34 33L32 33z"/>
+                    <path style="fill:#83807b; stroke:none;" d="M45 57L52 43L50 57C53.8108 57 70.1185 55.0089 61 49L61 38C48.7742 39.6962 43.4878 43.449 45 57z"/>
+                    <path style="fill:#888485; stroke:none;" d="M28 40C24.3534 44.5356 23.7079 51.4894 29 55L28 40z"/>
+                    <path style="fill:#585359; stroke:none;" d="M50 43L49 53L50 53L52 43L50 43z"/>
+                    <path style="fill:#615d5c; stroke:none;" d="M56 53L56 54L62 54L56 53z"/>
+                    <path style="fill:#85827d; stroke:none;" d="M99 61L83 69L90 69L91 76L87 79L96 79L96 82L100 82L99 61z"/>
+                    <path style="fill:#7c7974; stroke:none;" d="M26 63L19 77L18 77L18 74L17 74L17 77L16 77C12.7128 72.1331 7.22379 76.6525 6 81L17 80C13.3527 87.9192 6.544 82.0772 0 82L0 97L61 97L60 91L61 74L60 74L55 78L56 86L47 85L47 80L46 80L46 83L32 84L32 87L27 87L27 84L21 85L19 81L19 80L28 78L26 63z"/>
+                    <path style="fill:#726f6a; stroke:none;" d="M63 97L100 96L100 82L96 82L96 79C84.3674 79 67.262 84.6088 63 97z"/>
+                    <path style="fill:#a7a6a2; stroke:none;" d="M69 97L69 100L100 100L100 96L69 97z"/>
+                    <path style="fill:#bbbab6; stroke:none;" d="M0 97L0 100L69 100L69 97L0 97z"/>
+                    <path style="fill:#979694; stroke:none;" d="M11 97L11 98L51 98C40.488 93.589 22.434 97 11 97z"/>
+                </svg>
+                <h6 style="padding: .6rem;">AUTHORIZED SIGNATURE</h6>
+            </div>
+            <div class="text-center my-3">
+                <p class="my-4">Receipt generated on {{ user.paid_date }}</p>
+                <h6 style="font-weight: bold;padding: 1rem;">Confirm this receipt on Cypherspot.com</h6>
+                <p class="my-4">Cypherspot @ 2022. All rights reserved</p>
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" 
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    </body>
+</html>

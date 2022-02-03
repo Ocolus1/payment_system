@@ -18,11 +18,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env("SECRET_KEY")
+PAYMENT_REDIRECT_URL = env("PAYMENT_REDIRECT_URL")
+PAYMENT_ENDPOINT = env("PAYMENT_ENDPOINT")
+SECRET_TOKEN = env("SECRET_TOKEN")
+VERIFICATION_ENDPOINT = env("VERIFICATION_ENDPOINT")
+CONVERT_TO_PDF = env("CONVERT_TO_PDF")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.vercel.app']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -127,3 +132,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media_root')
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_HOST_USER = "spotcypherspot@gmail.com"
+EMAIL_HOST_PASSWORD = "nkhpkaljlrrqdxjs"
+EMAIL_USE_TLS = True
