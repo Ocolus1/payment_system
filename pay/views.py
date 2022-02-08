@@ -8,13 +8,18 @@ import datetime
 import requests
 from requests.structures import CaseInsensitiveDict
 import json
-import pdfkit
 import pandas as pd
+from weasyprint import HTML
+from django.template.loader import render_to_string
+import socket
 
-config = pdfkit.configuration(wkhtmltopdf='C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe')
+
+
+
 PAYMENT_REDIRECT_URL = settings.PAYMENT_REDIRECT_URL
 PAYMENT_ENDPOINT = settings.PAYMENT_ENDPOINT
 SECRET_TOKEN = settings.SECRET_TOKEN
+SECRET_TOKEN_PROD = settings.SECRET_TOKEN_PROD
 VERIFICATION_ENDPOINT = settings.VERIFICATION_ENDPOINT
 CONVERT_TO_PDF = settings.CONVERT_TO_PDF
 
@@ -28,10 +33,10 @@ def sendEmailWithAttach(emailto, dept, file_path, matric):
     sub = f"Payment receipt from {dept}"
     email = EmailMessage(sub, html_content, 'Cypherspot <do_not_reply@domain.com>', [emailto])
     email.content_subtype = "html"
-    
+
     file = open(file_path, 'rb')
     email.attach(f'{matric}.pdf', file.read(), 'text/pdf')
-    
+
     email.send()
     return "sent successfully"
 
@@ -57,6 +62,7 @@ def add_to_db(file_path):
             dept = "IESA"
         )
     return "Added successfully"
+
 
 # Create your views here.
 def index(request):
@@ -87,7 +93,7 @@ def details(request, mat_no):
     name = user.name
     level = user.level
     amt = user.amount
-    tax = (0.05 * amt) + 100
+    tax = 0
     amount = amt + tax
     if request.method == "POST":
         data = {
@@ -112,7 +118,8 @@ def details(request, mat_no):
             }
         }
         url = PAYMENT_ENDPOINT
-        token = SECRET_TOKEN
+        # token = SECRET_TOKEN #for development
+        token = SECRET_TOKEN_PROD #for production
         headers = CaseInsensitiveDict()
         body = json.dumps(data, default = defaultconverter)
         headers["Accept"] = "application/json"
@@ -120,6 +127,7 @@ def details(request, mat_no):
         headers["Authorization"] = f"Bearer {token}"
         req = requests.post(url, data=body, headers=headers)
         result = req.json()
+        req.close()
         if result['status'] == "success":
             link = result['data']['link']
             return redirect(to=link)
@@ -137,13 +145,15 @@ def process(request):
         elif status == "successful" :
             tx_id = request.GET["transaction_id"]
             url = f"{VERIFICATION_ENDPOINT}{tx_id}/verify"
-            token = SECRET_TOKEN
+            # token = SECRET_TOKEN #for development
+            token = SECRET_TOKEN_PROD #for production
             headers = CaseInsensitiveDict()
             headers["Accept"] = "application/json"
             headers["Content-Type"] = "application/json"
             headers["Authorization"] = f"Bearer {token}"
             req = requests.get(url,  headers=headers)
             result = req.json()
+            req.close()
             if result['status'] == "success" :
                 amount_paid = result['data']['charged_amount']
                 amount_to_pay = result['data']['meta']['price']
@@ -157,23 +167,12 @@ def process(request):
                     user.save()
                     header = "Your payment was successful"
                     text = "Check your email for your receipt."
-                    
-                    receipt(request, matric, amount_paid)
-                    options = {
-                        'page-size': 'A4',
-                        'orientation': 'Portrait',
-                        'margin-top': '0.75in',
-                        'margin-right': '0.75in',
-                        'margin-bottom': '0.75in',
-                        'margin-left': '0.75in',
-                        'encoding': "UTF-8",
-                        'custom-header': [
-                            ('Accept-Encoding', 'gzip')
-                        ],
-                        'no-outline': None
-                    }
-                    pdfkit.from_url(f'{CONVERT_TO_PDF}{matric}/{amount_paid}', 
-                    f'receipt/{matric}.pdf', configuration=config, options=options)
+
+                    # HTML(f'{CONVERT_TO_PDF}{matric}/{amount_paid}').write_pdf(f'receipt/{matric}.pdf')
+                    user = Student.objects.get(matric_no=matric)
+                    dept = Department.objects.get(short_name=user.dept)
+                    html_string = render_to_string('pay/receipt.html', { "user" : user, "dept": dept, "amount": amount_paid})
+                    HTML(string=html_string).write_pdf(f'receipt/{matric}.pdf')
                     sendEmailWithAttach(user.email, user.dept, f'receipt/{matric}.pdf', matric)
                     context = {"header":header, 'text':text }
                     return render(request, 'pay/process.html', context)
@@ -192,9 +191,10 @@ def process(request):
             text = "Contact your department."
             context = {"header":header, 'text':text }
             return render(request, 'pay/process.html', context)
-    
+
     header = "Wrong Page"
     text = "Go back to the homepage."
+    # HTML(string=html_string, base_url="https://cypherpay.pythonanywhere.com").write_pdf('mys.pdf', presentational_hints=True)
     context = {"header":header, 'text':text }
     return render(request, 'pay/process.html', context)
 
@@ -204,4 +204,3 @@ def receipt(request, user, amount):
     dept = Department.objects.get(short_name=user.dept)
     context = { "user" : user, "dept": dept, "amount": amount }
     return render(request, 'pay/receipt.html', context)
-    

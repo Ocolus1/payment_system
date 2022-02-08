@@ -15,13 +15,13 @@
             {% csrf_token %}
             {% if exist == "absent" %}
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <div>User does not exist!</div>
+                <div>Incorrect matric number!</div>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
             {% endif %}
             {% if exist == "paid" %}
             <div class="alert alert-info alert-dismissible fade show" role="alert">
-                <div>User has made payment!</div>
+                <div>Student has made payment already!</div>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
             {% endif %}
