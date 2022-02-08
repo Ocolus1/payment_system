@@ -1,17 +1,16 @@
 {% extends 'pay/base.html' %}{% load static %}
 {% block content %}
 <div class="main_div ">
-    <main class="the_div shadow p-3 mb-5 bg-body rounded">
-        <div class="img_div text-center mb-5">
-            <img src="{% static 'pay/img/iesa_logo.jpg' %}" alt="iesa logo"  class="iesa_logo">
-            <h2 class="my-2">IESA DUES</h2>
-            <div class="form-text">BY IESA UI</div>
+    <main class="the_div shadow p-3 bg-body rounded">
+        <div class="img_div text-center mb-5 pt-3">
+            <img src="{{ department.avatar.url }}" alt="department logo"  class="dept_logo">
+            <h2 class="my-2">{{ department.short_name }} DUES</h2>
+            <div class="form-text">BY {{ department.short_name }} UI</div>
             <div class="description p-1">
-                Pay your Industrial Engineering Student Association dues from the
-                comfort of your home.
+                {{ department.description }}
             </div>
         </div>
-        <form method="post">
+        <form class="row" method="post">
             {% csrf_token %}
             {% if exist == "absent" %}
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -19,24 +18,34 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
             {% endif %}
-            <div class="mb-4">
+            <div class="mb-4 col-md-6 col-sm-12">
                 <label for="matric" class="form-label mb-2">Matric Number</label>
-                <input type="text" class="form-control form-control-sm" 
+                <input type="text" class="form-control" 
                 id="matric" name="matric_no" value="{{user.matric_no}}" readonly>
             </div>
-            <div class="mb-4">
+            <div class="mb-4 col-md-6 col-sm-12">
                 <label for="name" class="form-label mb-2">Name</label>
-                <input type="text" class="form-control form-control-sm" 
+                <input type="text" class="form-control" 
                 id="name" name="name" value="{{user.name}}" readonly>
             </div>
-            <div class="mb-4">
+            <div class="mb-4 col-md-6 col-sm-12">
                 <label for="email" class="form-label mb-2">Email</label>
-                <input type="email" class="form-control form-control-sm" 
+                <input type="email" class="form-control" 
                 id="email" name="email" value="{{user.email}}" readonly>
             </div>
-            <div class="mb-4">
+            <div class="mb-4 col-md-6 col-sm-12">
+                <label for="level" class="form-label mb-2">Level</label>
+                <input type="text" class="form-control" 
+                id="level" name="level" value="{{user.level}}" readonly>
+            </div>
+            <div class="mb-4 col-md-6 col-sm-12">
+                <label for="purpose" class="form-label mb-2">Purpose</label>
+                <input type="text" class="form-control" 
+                id="purpose" name="purpose" value="{{user.purpose}}" readonly>
+            </div>
+            <div class="mb-4 col-md-6 col-sm-12">
                 <label for="amount" class="form-label mb-2">Amount</label>
-                <input type="text" class="form-control form-control-sm" 
+                <input type="text" class="form-control" 
                 id="amount" name="amount" value="{{user.amount}}" readonly>
             </div>
             <div class="d-grid gap-2 my-4">

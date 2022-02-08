@@ -73,26 +73,29 @@ def index(request):
         try:
             user = Student.objects.get(matric_no=matric)
             mat_no = user.matric_no
+            dept = user.dept
             if user.paid == True :
                 exist = "paid"
                 context = { "exist" : exist }
                 return render(request, 'pay/index.html', context)
             else:
-                return redirect("details", mat_no=mat_no)
+                return redirect("details", dept=dept, mat_no=mat_no)
         except Student.DoesNotExist as e:
             exist = "absent"
     context = { "exist" : exist }
     return render(request, 'pay/index.html', context)
 
 
-def details(request, mat_no):
+def details(request, dept, mat_no):
     csrf_token = get_token(request)
     user = Student.objects.get(matric_no=mat_no)
     matric = user.matric_no
     email = user.email
     name = user.name
     level = user.level
+    phone = user.phone
     amt = user.amount
+    department = Department.objects.get(short_name=dept)
     tax = 0
     amount = amt + tax
     if request.method == "POST":
@@ -101,20 +104,21 @@ def details(request, mat_no):
             "amount": amount,
             "currency": "NGN",
             "payment_options" : "card",
-            "redirect_url" : PAYMENT_REDIRECT_URL,
+            "redirect_url" : f"{PAYMENT_REDIRECT_URL}/{dept}",
             "customer" : {
                 "matric" : matric,
                 "email" : email,
                 "name" : name,
-                "level" : level
+                "level" : level,
+                "phone_number" : phone
             },
             "meta" : {
                 "price" : amount,
                 "matric" : matric,
             },
             "customizations" : {
-                "title" : "Payment for IESA dues",
-                "description" : "Industrial Engineering Student Association dues"
+                "title" : f"Payment for {dept} dues",
+                "description" : f"{department.description}"
             }
         }
         url = PAYMENT_ENDPOINT
@@ -133,11 +137,11 @@ def details(request, mat_no):
             return redirect(to=link)
         else:
             return HttpResponse("We cannot process your account")
-    context = { "user" : user, "csrftoken": csrf_token }
+    context = { "user" : user, "csrftoken": csrf_token, "department":department }
     return render(request, 'pay/details.html', context)
 
 
-def process(request):
+def process(request, dept):
     status  = request.GET.get("status")
     if status:
         if status == "cancelled" :
@@ -172,8 +176,8 @@ def process(request):
                     user = Student.objects.get(matric_no=matric)
                     dept = Department.objects.get(short_name=user.dept)
                     html_string = render_to_string('pay/receipt.html', { "user" : user, "dept": dept, "amount": amount_paid})
-                    HTML(string=html_string).write_pdf(f'receipt/{matric}.pdf')
-                    sendEmailWithAttach(user.email, user.dept, f'receipt/{matric}.pdf', matric)
+                    HTML(string=html_string).write_pdf(f'receipt/{dept}/{matric}.pdf')
+                    sendEmailWithAttach(user.email, user.dept, f'receipt/{dept}/{matric}.pdf', matric)
                     context = {"header":header, 'text':text }
                     return render(request, 'pay/process.html', context)
                 else:
@@ -204,3 +208,16 @@ def receipt(request, user, amount):
     dept = Department.objects.get(short_name=user.dept)
     context = { "user" : user, "dept": dept, "amount": amount }
     return render(request, 'pay/receipt.html', context)
+
+
+def custom_page_not_found_view(request, exception):
+    return render(request, "pay/errors/404.html", {})
+
+def custom_error_view(request, exception=None):
+    return render(request, "pay/errors/500.html", {})
+
+def custom_permission_denied_view(request, exception=None):
+    return render(request, "pay/errors/403.html", {})
+
+def custom_bad_request_view(request, exception=None):
+    return render(request, "errors/400.html", {})
