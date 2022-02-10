@@ -122,8 +122,8 @@ def details(request, dept, mat_no):
             }
         }
         url = PAYMENT_ENDPOINT
-        # token = SECRET_TOKEN #for development
-        token = SECRET_TOKEN_PROD #for production
+        token = SECRET_TOKEN #for development
+        # token = SECRET_TOKEN_PROD #for production
         headers = CaseInsensitiveDict()
         body = json.dumps(data, default = defaultconverter)
         headers["Accept"] = "application/json"
@@ -143,14 +143,15 @@ def details(request, dept, mat_no):
 
 def process(request, dept):
     status  = request.GET.get("status")
+    dept = Department.objects.get(short_name=dept)
     if status:
         if status == "cancelled" :
             return redirect(index)
         elif status == "successful" :
             tx_id = request.GET["transaction_id"]
             url = f"{VERIFICATION_ENDPOINT}{tx_id}/verify"
-            # token = SECRET_TOKEN #for development
-            token = SECRET_TOKEN_PROD #for production
+            token = SECRET_TOKEN #for development
+            # token = SECRET_TOKEN_PROD #for production
             headers = CaseInsensitiveDict()
             headers["Accept"] = "application/json"
             headers["Content-Type"] = "application/json"
@@ -176,30 +177,32 @@ def process(request, dept):
                     user = Student.objects.get(matric_no=matric)
                     dept = Department.objects.get(short_name=user.dept)
                     html_string = render_to_string('pay/receipt.html', { "user" : user, "dept": dept, "amount": amount_paid})
-                    HTML(string=html_string).write_pdf(f'receipt/{dept}/{matric}.pdf')
-                    sendEmailWithAttach(user.email, user.dept, f'receipt/{dept}/{matric}.pdf', matric)
-                    context = {"header":header, 'text':text }
+                    print("holla")
+                    HTML(string=html_string).write_pdf(f'receipt/{dept.short_name}/{matric}.pdf')
+                    print("super")
+                    sendEmailWithAttach(user.email, user.dept, f'receipt/{dept.short_name}/{matric}.pdf', matric)
+                    context = {"header":header, 'text':text, "dept": dept }
                     return render(request, 'pay/process.html', context)
                 else:
                     header = "Fraudulent Transaction Detected"
                     text = "Repeat your payment."
-                    context = {"header":header, 'text':text }
+                    context = {"header":header, 'text':text, "dept": dept }
                     return render(request, 'pay/process.html', context)
             else:
                 header = "Cannot Process Your Payment"
                 text = "Contact your department."
-                context = {"header":header, 'text':text }
+                context = {"header":header, 'text':text, "dept": dept }
                 return render(request, 'pay/process.html', context)
         else:
             header = "Cannot Process Your Payment"
             text = "Contact your department."
-            context = {"header":header, 'text':text }
+            context = {"header":header, 'text':text, "dept": dept }
             return render(request, 'pay/process.html', context)
 
     header = "Wrong Page"
     text = "Go back to the homepage."
     # HTML(string=html_string, base_url="https://cypherpay.pythonanywhere.com").write_pdf('mys.pdf', presentational_hints=True)
-    context = {"header":header, 'text':text }
+    context = {"header":header, 'text':text, "dept": dept }
     return render(request, 'pay/process.html', context)
 
 

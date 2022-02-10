@@ -2,13 +2,12 @@
 {% block content %}
 <div class="main_div ">
     <main class="the_div shadow p-3 mb-5 bg-body rounded">
-        <div class="img_div text-center mb-5">
-            <img src="{% static 'pay/img/iesa_logo.jpg' %}" alt="iesa logo"  class="iesa_logo">
-            <h2 class="my-2">IESA DUES</h2>
-            <div class="form-text">BY IESA UI</div>
+        <div class="img_div text-center mb-5 pt-3">
+            <img src="{{ dept.avatar.url }}" alt="department logo"  class="dept_logo">
+            <h2 class="my-2">{{ dept.short_name }} DUES</h2>
+            <div class="form-text">BY {{ dept.short_name }} UI</div>
             <div class="description p-1">
-                Pay your Industrial Engineering Student Association dues from the
-                comfort of your home.
+                {{ dept.description }}
             </div>
         </div>
         <div>
