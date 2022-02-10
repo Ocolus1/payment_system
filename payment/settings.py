@@ -24,12 +24,12 @@ SECRET_TOKEN = env("SECRET_TOKEN")
 SECRET_TOKEN_PROD = env("SECRET_TOKEN_PROD")
 VERIFICATION_ENDPOINT = env("VERIFICATION_ENDPOINT")
 CONVERT_TO_PDF = env("CONVERT_TO_PDF")
+TAX = env("TAX")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
-# ALLOWED_HOSTS = ['.vercel.app']
 
 
 # Application definition

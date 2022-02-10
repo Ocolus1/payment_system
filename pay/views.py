@@ -22,6 +22,7 @@ SECRET_TOKEN = settings.SECRET_TOKEN
 SECRET_TOKEN_PROD = settings.SECRET_TOKEN_PROD
 VERIFICATION_ENDPOINT = settings.VERIFICATION_ENDPOINT
 CONVERT_TO_PDF = settings.CONVERT_TO_PDF
+TAX = settings.TAX
 
 def defaultconverter(o):
     if isinstance(o, datetime.datetime):
@@ -96,7 +97,7 @@ def details(request, dept, mat_no):
     phone = user.phone
     amt = user.amount
     department = Department.objects.get(short_name=dept)
-    tax = 0
+    tax = int(TAX)
     amount = amt + tax
     if request.method == "POST":
         data = {
