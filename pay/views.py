@@ -1,3 +1,4 @@
+from ssl import Purpose
 from django.shortcuts import redirect, render
 from django.middleware.csrf import get_token
 from django.http import HttpResponse
@@ -11,9 +12,6 @@ import json
 import pandas as pd
 from weasyprint import HTML
 from django.template.loader import render_to_string
-import socket
-
-
 
 
 PAYMENT_REDIRECT_URL = settings.PAYMENT_REDIRECT_URL
@@ -59,27 +57,34 @@ def add_to_db(file_path):
             email = i[2],
             phone = i[3],
             level = i[4],
-            amount = i[5],
-            dept = "IESA"
+            dept = i[5]
         )
+    print("Added successfully!")
     return "Added successfully"
 
 
 # Create your views here.
 def index(request):
     exist = "pending"
-    # add_to_db('data/three.xlsx')
+    # add_to_db('data/200 LEVEL.xlsx')
+    # add_to_db('data/300 LEVEL.xlsx')
+    # add_to_db('data/400 LEVEL.xlsx')
+    # add_to_db('data/500 LEVEL.xlsx')
     if request.method == "POST":
         matric  = request.POST["matric_no"]
+        dues  = request.POST.getlist('dues')
         try:
             user = Student.objects.get(matric_no=matric)
             mat_no = user.matric_no
             dept = user.dept
-            if user.paid == True :
-                exist = "paid"
+            if user.paid_basic == user.paid_conference == user.paid_dinner == True:
+                exist = "paid_all"
                 context = { "exist" : exist }
                 return render(request, 'pay/index.html', context)
             else:
+                purpose = " ".join([str(i) for i in dues])
+                user.purpose = purpose
+                user.save()
                 return redirect("details", dept=dept, mat_no=mat_no)
         except Student.DoesNotExist as e:
             exist = "absent"
@@ -95,10 +100,33 @@ def details(request, dept, mat_no):
     name = user.name
     level = user.level
     phone = user.phone
-    amt = user.amount
+    pup = user.purpose
+    all_due0 = ["BASIC DUES", "CONFERENCE", "DINNER"]
+    all_due1 = ["BASIC DUES", "CONFERENCE"]
+    all_due2 = ["BASIC DUES", "DINNER"]
+    all_due3 = ["CONFERENCE", "DINNER"]
+
+    if all(x in pup for x in all_due0):
+        amount_due = 6000
+    elif all(x in pup for x in all_due1):
+        amount_due = 4000
+    elif all(x in pup for x in all_due2):
+        amount_due = 5000
+    elif all(x in pup for x in all_due3):
+        amount_due = 3000
+    elif pup == "BASIC DUES":
+        amount_due = 3000
+    elif pup == "CONFERENCE":
+        amount_due = 1000
+    elif pup == "DINNER":
+        amount_due = 2000
+
+    user.amount = amount_due
+    user.save()
     department = Department.objects.get(short_name=dept)
     tax = int(TAX)
-    amount = amt + tax
+    amount = amount_due + tax
+    print(amount)
     if request.method == "POST":
         data = {
             "tx_ref" : datetime.datetime.now(),
@@ -167,7 +195,27 @@ def process(request, dept):
                 reference  = result['data']['flw_ref']
                 if float(amount_paid) >= float(amount_to_pay) :
                     user = Student.objects.get(matric_no=matric)
-                    user.paid = True
+                    pup = user.purpose
+                    all_due0 = ["BASIC DUES", "CONFERENCE", "DINNER"]
+                    all_due1 = ["BASIC DUES", "CONFERENCE"]
+                    all_due2 = ["BASIC DUES", "DINNER"]
+                    all_due3 = ["CONFERENCE", "DINNER"]
+
+                    if all(x in pup for x in all_due0):
+                        user.paid_basic = user.paid_conference = user.paid_dinner = True
+                    elif all(x in pup for x in all_due1):
+                        user.paid_basic = user.paid_conference = True
+                    elif all(x in pup for x in all_due2):
+                        user.paid_basic = user.paid_dinner = True
+                    elif all(x in pup for x in all_due3):
+                        user.paid_dinner = user.paid_conference = True
+                    elif pup == "BASIC DUES":
+                        user.paid_basic = True
+                    elif pup == "CONFERENCE":
+                        user.paid_conference = True
+                    elif pup == "DINNER":
+                        user.paid_dinner = True
+                    
                     user.paid_date = datetime.datetime.now()
                     user.ref = reference
                     user.save()
@@ -178,9 +226,7 @@ def process(request, dept):
                     user = Student.objects.get(matric_no=matric)
                     dept = Department.objects.get(short_name=user.dept)
                     html_string = render_to_string('pay/receipt.html', { "user" : user, "dept": dept, "amount": amount_paid})
-                    print("holla")
                     HTML(string=html_string).write_pdf(f'receipt/{dept.short_name}/{matric}.pdf')
-                    print("super")
                     sendEmailWithAttach(user.email, user.dept, f'receipt/{dept.short_name}/{matric}.pdf', matric)
                     context = {"header":header, 'text':text, "dept": dept }
                     return render(request, 'pay/process.html', context)

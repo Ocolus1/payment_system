@@ -3,7 +3,7 @@
 <div class="container col-xl-10 col-xxl-8 px-4 py-5">
     <div class="row align-items-center g-lg-5 py-5">
         <div class="col-lg-7 text-center text-lg-start">
-            <h1 class="display-4 fw-bold lh-1 mb-3">Cypherspot School Payment form</h1>
+            <h1 class="display-4 fw-bold lh-1 mb-3">Payz Payment</h1>
             <p class="col-lg-10 fs-4">
                 A fast and reliable way to make payments online.
                 The fast, affordable and secure way to make 
@@ -25,9 +25,9 @@
                     ></button>
                 </div>
                 {% endif %}
-                {% if exist == "paid" %}
+                {% if exist == "paid_all" %}
                 <div class="alert alert-info alert-dismissible fade show" role="alert">
-                    <div>Student has made payment already!</div>
+                    <div>Student has made all payment already!</div>
                     <button
                         type="button"
                         class="btn-close"
@@ -36,6 +36,14 @@
                     ></button>
                 </div>
                 {% endif %}
+                <div class="form-floating mb-3">
+                    <select class="js-example-basic-multiple js-example-responsive js-states form-control " 
+                    name="dues" multiple="multiple" style="width: 100%;" required>
+                        <option value="BASIC DUES">BASIC DUES - (compulsory)</option>
+                        <option value="CONFERENCE">CONFERENCE - (optional)</option>
+                        <option value="DINNER">DINNER - (optional)</option>
+                    </select>
+                </div>
                 <div class="form-floating mb-3">
                     <input
                         type="text"
@@ -53,5 +61,16 @@
         </div>
     </div>
 </div>
-
+<script>
+    $(document).ready(function() {
+        $('.js-example-basic-multiple').select2();
+        $("select").select2({
+            tags: "true",
+            placeholder: "Select your dues",
+            allowClear: true,
+            theme: "classic",
+            width: 'resolve'
+        });
+    });
+</script>
 {% endblock content %}

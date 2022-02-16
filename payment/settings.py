@@ -24,6 +24,8 @@ SECRET_TOKEN = env("SECRET_TOKEN")
 SECRET_TOKEN_PROD = env("SECRET_TOKEN_PROD")
 VERIFICATION_ENDPOINT = env("VERIFICATION_ENDPOINT")
 CONVERT_TO_PDF = env("CONVERT_TO_PDF")
+PASSWORD = env("PASSWORD")
+USER_EMAIL = env("USER_EMAIL")
 TAX = env("TAX")
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -138,6 +140,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
-EMAIL_HOST_USER = "spotcypherspot@gmail.com"
-EMAIL_HOST_PASSWORD = "nkhpkaljlrrqdxjs"
+EMAIL_HOST_USER = USER_EMAIL
+EMAIL_HOST_PASSWORD = PASSWORD
 EMAIL_USE_TLS = True
