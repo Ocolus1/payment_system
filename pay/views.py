@@ -66,6 +66,7 @@ def add_to_db(file_path):
 # Create your views here.
 def index(request):
     exist = "pending"
+    # add_to_db('data/100 LEVEL.xlsx')
     # add_to_db('data/200 LEVEL.xlsx')
     # add_to_db('data/300 LEVEL.xlsx')
     # add_to_db('data/400 LEVEL.xlsx')
