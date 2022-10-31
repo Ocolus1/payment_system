@@ -1,4 +1,3 @@
-from ssl import Purpose
 from django.shortcuts import redirect, render
 from django.middleware.csrf import get_token
 from django.http import HttpResponse
@@ -127,7 +126,6 @@ def details(request, dept, mat_no):
     department = Department.objects.get(short_name=dept)
     tax = int(TAX)
     amount = amount_due + tax
-    print(amount)
     if request.method == "POST":
         data = {
             "tx_ref" : datetime.datetime.now(),
