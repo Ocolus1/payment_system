@@ -1,0 +1,68 @@
+* {
+    box-sizing: border-box;
+  }
+  
+  html, body{
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
+  
+
+.main_div {
+    display: flex;
+    align-items: center;
+    margin-top: 0%;
+    /* height: 100vh; */
+    /* background-color: #f0f0f0; */
+}
+
+.the_div {
+    width: 100%;
+    padding: 2rem 2rem 10rem 2rem;
+    margin: auto;
+    background-color: #ffffff;
+    /* margin-bottom: 3rem; */
+    /* box-shadow: -8px -5px 5px rgb(51, 43, 43); */
+}
+
+.description, .form-label {
+    font-size: 90%;
+}
+
+
+.dept_logo {
+    width: 20%;
+    height: 20%;
+}
+
+@media screen and (min-width: 576px) {
+    .the_div {
+        width: 70%;
+        margin-bottom: 4rem;
+    }
+
+    .main_div {
+        margin-top: 6%;
+    }
+}
+
+@media screen and (min-width: 768px) {   
+    .the_div {
+        width: 80%;
+    }
+
+}
+
+@media screen and (min-width: 992px) {
+    .the_div {
+        padding: 1rem 3rem !important;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .main_div {
+        margin-top: 3%;
+    }
+}
