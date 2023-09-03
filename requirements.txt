@@ -8,3 +8,5 @@ reportlab
 requests
 urllib3
 weasyprint
+gunicorn
+whitenoise[brotli]
