@@ -36,6 +36,26 @@
                     ></button>
                 </div>
                 {% endif %}
+                {% if paid_basic == "Not Paid" %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <div>Payment for last session is required!</div>
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="alert"
+                        aria-label="Close"
+                    ></button>
+                </div>
+                <div class="form-floating mb-3">
+                    <select class="js-example-basic-multiple js-example-responsive js-states form-control " 
+                    name="dues" multiple="multiple" style="width: 100%;" required>
+                        <option value="BASIC_DUES(2021/2022)">BASIC DUES (2021/2022)</option>
+                        <option value="BASIC DUES">BASIC DUES</option>
+                        <option value="CONFERENCE">CONFERENCE</option>
+                        <option value="DINNER">DINNER</option>
+                    </select>
+                </div>
+                {% else %}
                 <div class="form-floating mb-3">
                     <select class="js-example-basic-multiple js-example-responsive js-states form-control " 
                     name="dues" multiple="multiple" style="width: 100%;" required>
@@ -44,6 +64,7 @@
                         <option value="DINNER">DINNER</option>
                     </select>
                 </div>
+                {% endif %}
                 <div class="form-floating mb-3">
                     <input
                         type="text"

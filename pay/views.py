@@ -77,15 +77,36 @@ def index(request):
             user = Student.objects.get(matric_no=matric)
             mat_no = user.matric_no
             dept = user.dept
-            if user.paid_basic == user.paid_conference == user.paid_dinner == True:
-                exist = "paid_all"
-                context = { "exist" : exist }
-                return render(request, 'pay/index.html', context)
+            level = user.level
+            if level >= 200:
+                if user.paid_basic == True:
+                    if user._paid_basic == user._paid_conference == user._paid_dinner == True:
+                        exist = "paid_all"
+                        context = { "exist" : exist }
+                        return render(request, 'pay/index.html', context)
+                    else:
+                        purpose = " ".join([str(i) for i in dues])
+                        user.purpose = purpose
+                        user.save()
+                        return redirect("details", dept=dept, mat_no=mat_no)
+                else:
+                    if "BASIC_DUES(2021/2022)" in dues:
+                        purpose = " ".join([str(i) for i in dues])
+                        user.purpose = purpose
+                        user.save()
+                        return redirect("details", dept=dept, mat_no=mat_no)
+                    context = { "paid_basic" : "Not Paid" }
+                    return render(request, 'pay/index.html', context)
             else:
-                purpose = " ".join([str(i) for i in dues])
-                user.purpose = purpose
-                user.save()
-                return redirect("details", dept=dept, mat_no=mat_no)
+                if user._paid_basic == user._paid_conference == user._paid_dinner == True:
+                    exist = "paid_all"
+                    context = { "exist" : exist }
+                    return render(request, 'pay/index.html', context)
+                else:
+                    purpose = " ".join([str(i) for i in dues])
+                    user.purpose = purpose
+                    user.save()
+                    return redirect("details", dept=dept, mat_no=mat_no)
         except Student.DoesNotExist as e:
             exist = "absent"
     context = { "exist" : exist }
@@ -105,8 +126,29 @@ def details(request, dept, mat_no):
     all_due1 = ["BASIC DUES", "CONFERENCE"]
     all_due2 = ["BASIC DUES", "DINNER"]
     all_due3 = ["CONFERENCE", "DINNER"]
+    all_due4 = ["BASIC_DUES(2021/2022)", "BASIC DUES", "CONFERENCE", "DINNER"]
+    all_due5 = ["BASIC_DUES(2021/2022)", "BASIC DUES", "CONFERENCE"]
+    all_due6 = ["BASIC_DUES(2021/2022)", "BASIC DUES", "DINNER"]
+    all_due7 = ["BASIC_DUES(2021/2022)", "CONFERENCE", "DINNER"]
+    all_due8 = ["BASIC_DUES(2021/2022)", "BASIC DUES"]
+    all_due9 = ["BASIC_DUES(2021/2022)", "CONFERENCE"]
+    all_due10 = ["BASIC_DUES(2021/2022)", "DINNER"]
 
-    if all(x in pup for x in all_due0):
+    if all(x in pup for x in all_due4):
+        amount_due = 9000
+    elif all(x in pup for x in all_due5):
+        amount_due = 7000
+    elif all(x in pup for x in all_due6):
+        amount_due = 8000
+    elif all(x in pup for x in all_due7):
+        amount_due = 6000
+    elif all(x in pup for x in all_due8):
+        amount_due = 6000
+    elif all(x in pup for x in all_due9):
+        amount_due = 4000
+    elif all(x in pup for x in all_due10):
+        amount_due = 5000
+    elif all(x in pup for x in all_due0):
         amount_due = 6000
     elif all(x in pup for x in all_due1):
         amount_due = 4000
@@ -120,6 +162,8 @@ def details(request, dept, mat_no):
         amount_due = 1000
     elif pup == "DINNER":
         amount_due = 2000
+    elif pup == "BASIC_DUES(2021/2022)":
+        amount_due = 3000
 
     user.amount = amount_due
     user.save()
@@ -199,21 +243,26 @@ def process(request, dept):
                     all_due1 = ["BASIC DUES", "CONFERENCE"]
                     all_due2 = ["BASIC DUES", "DINNER"]
                     all_due3 = ["CONFERENCE", "DINNER"]
+                    all_due4 = ["BASIC DUES (2021/2022)", "BASIC DUES", "CONFERENCE", "DINNER"]
 
-                    if all(x in pup for x in all_due0):
-                        user.paid_basic = user.paid_conference = user.paid_dinner = True
+                    if all(x in pup for x in all_due4):
+                        user.paid_basic = user._paid_basic = user._paid_conference = user._paid_dinner = True
+                    elif all(x in pup for x in all_due0):
+                        user._paid_basic = user._paid_conference = user._paid_dinner = True
                     elif all(x in pup for x in all_due1):
-                        user.paid_basic = user.paid_conference = True
+                        user._paid_basic = user._paid_conference = True
                     elif all(x in pup for x in all_due2):
-                        user.paid_basic = user.paid_dinner = True
+                        user._paid_basic = user._paid_dinner = True
                     elif all(x in pup for x in all_due3):
-                        user.paid_dinner = user.paid_conference = True
+                        user._paid_dinner = user._paid_conference = True
                     elif pup == "BASIC DUES":
-                        user.paid_basic = True
+                        user._paid_basic = True
                     elif pup == "CONFERENCE":
-                        user.paid_conference = True
+                        user._paid_conference = True
                     elif pup == "DINNER":
-                        user.paid_dinner = True
+                        user._paid_dinner = True
+                    elif pup == "BASIC DUES (2021/2022)":
+                        user.paid_basic = True
                     
                     user.paid_date = datetime.datetime.now()
                     user.ref = reference
