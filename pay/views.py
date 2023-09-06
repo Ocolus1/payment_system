@@ -86,12 +86,16 @@ def index(request):
                         return render(request, 'pay/index.html', context)
                     else:
                         purpose = " ".join([str(i) for i in dues])
+                        user.purpose = ""
+                        user.save()
                         user.purpose = purpose
                         user.save()
                         return redirect("details", dept=dept, mat_no=mat_no)
                 else:
                     if "BASIC_DUES(2021/2022)" in dues:
                         purpose = " ".join([str(i) for i in dues])
+                        user.purpose = ""
+                        user.save()
                         user.purpose = purpose
                         user.save()
                         return redirect("details", dept=dept, mat_no=mat_no)
@@ -104,6 +108,8 @@ def index(request):
                     return render(request, 'pay/index.html', context)
                 else:
                     purpose = " ".join([str(i) for i in dues])
+                    user.purpose = ""
+                    user.save()
                     user.purpose = purpose
                     user.save()
                     return redirect("details", dept=dept, mat_no=mat_no)
@@ -122,6 +128,11 @@ def details(request, dept, mat_no):
     level = user.level
     phone = user.phone
     pup = user.purpose
+    basic_dues = 3000
+    basic_dues_2021_2022 = 3000
+    conference = 1500
+    dinner = 2500
+
     all_due0 = ["BASIC DUES", "CONFERENCE", "DINNER"]
     all_due1 = ["BASIC DUES", "CONFERENCE"]
     all_due2 = ["BASIC DUES", "DINNER"]
@@ -135,35 +146,35 @@ def details(request, dept, mat_no):
     all_due10 = ["BASIC_DUES(2021/2022)", "DINNER"]
 
     if all(x in pup for x in all_due4):
-        amount_due = 9000
+        amount_due = basic_dues_2021_2022 + basic_dues + conference + dinner
     elif all(x in pup for x in all_due5):
-        amount_due = 7000
+        amount_due = basic_dues_2021_2022 + basic_dues + conference
     elif all(x in pup for x in all_due6):
-        amount_due = 8000
+        amount_due = basic_dues_2021_2022 + basic_dues + dinner
     elif all(x in pup for x in all_due7):
-        amount_due = 6000
+        amount_due = basic_dues_2021_2022 + conference + dinner
     elif all(x in pup for x in all_due8):
-        amount_due = 6000
+        amount_due = basic_dues_2021_2022 + basic_dues
     elif all(x in pup for x in all_due9):
-        amount_due = 4000
+        amount_due = basic_dues_2021_2022 + conference
     elif all(x in pup for x in all_due10):
-        amount_due = 5000
+        amount_due = basic_dues_2021_2022 + dinner
     elif all(x in pup for x in all_due0):
-        amount_due = 6000
+        amount_due = basic_dues + conference + dinner
     elif all(x in pup for x in all_due1):
-        amount_due = 4000
+        amount_due = basic_dues + conference
     elif all(x in pup for x in all_due2):
-        amount_due = 5000
+        amount_due = basic_dues + dinner
     elif all(x in pup for x in all_due3):
-        amount_due = 3000
+        amount_due = conference + dinner
     elif pup == "BASIC DUES":
-        amount_due = 3000
+        amount_due = basic_dues
     elif pup == "CONFERENCE":
-        amount_due = 1000
+        amount_due = conference
     elif pup == "DINNER":
-        amount_due = 2000
+        amount_due = dinner
     elif pup == "BASIC_DUES(2021/2022)":
-        amount_due = 3000
+        amount_due = basic_dues_2021_2022
 
     user.amount = amount_due
     user.save()
