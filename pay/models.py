@@ -7,7 +7,7 @@ class Student(models.Model):
     matric_no = models.IntegerField(null=True, unique=True)
     name = models.CharField(max_length=150, null=True)
     email = models.EmailField(max_length=100, null=True)
-    phone = models.IntegerField(null=True, default="08090989808")
+    phone = models.CharField(null=True, max_length=15, default="08090989808")
     level = models.IntegerField(null=True)
     amount = models.IntegerField(null=True, blank=True)
     total_amount = models.IntegerField(null=True, blank=True)

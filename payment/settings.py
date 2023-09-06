@@ -1,6 +1,7 @@
 from pathlib import Path
 import os
 import environ
+import dj_database_url
 
 
 env = environ.Env()
@@ -27,6 +28,7 @@ CONVERT_TO_PDF = env("CONVERT_TO_PDF")
 PASSWORD = env("PASSWORD")
 USER_EMAIL = env("USER_EMAIL")
 TAX = env("TAX")
+DATABASE_URL = env("DATABASE_URL")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DEBUG")
@@ -81,11 +83,14 @@ WSGI_APPLICATION = 'payment.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 # DATABASES = {}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(default=DATABASE_URL)
 }
 
 

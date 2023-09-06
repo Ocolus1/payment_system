@@ -205,8 +205,8 @@ def details(request, dept, mat_no):
             }
         }
         url = PAYMENT_ENDPOINT
-        token = SECRET_TOKEN #for development
-        # token = SECRET_TOKEN_PROD #for production
+        # token = SECRET_TOKEN #for development
+        token = SECRET_TOKEN_PROD #for production
         headers = CaseInsensitiveDict()
         body = json.dumps(data, default = defaultconverter)
         headers["Accept"] = "application/json"
@@ -233,8 +233,8 @@ def process(request, dept):
         elif status == "successful" :
             tx_id = request.GET["transaction_id"]
             url = f"{VERIFICATION_ENDPOINT}{tx_id}/verify"
-            token = SECRET_TOKEN #for development
-            # token = SECRET_TOKEN_PROD #for production
+            # token = SECRET_TOKEN #for development
+            token = SECRET_TOKEN_PROD #for production
             headers = CaseInsensitiveDict()
             headers["Accept"] = "application/json"
             headers["Content-Type"] = "application/json"

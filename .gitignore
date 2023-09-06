@@ -2,3 +2,6 @@ env/
 .env
 __pycache__
 data
+data.sql
+sqlite_data.sql
+db.sqlite3

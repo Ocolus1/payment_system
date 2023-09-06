@@ -34,7 +34,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='student',
             name='phone',
-            field=models.IntegerField(default='08090989808', null=True),
+            field=models.CharField(default='08090989808',
+                                   max_length=15, null=True),
         ),
         migrations.AddField(
             model_name='student',

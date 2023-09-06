@@ -2,3 +2,6 @@ fly.toml
 .git/
 data
 env
+data.sql
+sqlite_data.sql
+db.sqlite3

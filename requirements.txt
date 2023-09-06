@@ -4,6 +4,7 @@ certifi==2023.7.22
 cffi==1.15.1
 charset-normalizer==3.2.0
 cssselect2==0.7.0
+dj-database-url==2.1.0
 Django==4.2.4
 django-environ==0.11.2
 et-xmlfile==1.1.0
@@ -16,6 +17,7 @@ openpyxl==3.1.2
 packaging==23.1
 pandas==2.1.0
 Pillow==10.0.0
+psycopg2-binary==2.9.7
 pycparser==2.21
 pydyf==0.7.0
 pyphen==0.14.0
@@ -26,6 +28,7 @@ requests==2.31.0
 six==1.16.0
 sqlparse==0.4.4
 tinycss2==1.2.1
+typing_extensions==4.7.1
 tzdata==2023.3
 urllib3==2.0.4
 weasyprint==59.0
