@@ -131,7 +131,7 @@ def details(request, dept, mat_no):
     basic_dues = 3000
     basic_dues_2021_2022 = 3000
     conference = 1500
-    dinner = 2500
+    dinner = 3000
 
     all_due0 = ["BASIC DUES", "CONFERENCE", "DINNER"]
     all_due1 = ["BASIC DUES", "CONFERENCE"]
