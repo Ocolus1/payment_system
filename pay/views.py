@@ -27,9 +27,9 @@ def defaultconverter(o):
 
 
 def sendEmailWithAttach(emailto, dept, file_path, matric):
-    html_content = "Your payment was successful. Kindly find the attached receipt."
+    html_content = f"Your payment to {dept} was successful. Kindly find the attached receipt."
     sub = f"Payment receipt from {dept}"
-    email = EmailMessage(sub, html_content, 'Cypherspot <do_not_reply@domain.com>', [emailto])
+    email = EmailMessage(sub, html_content, 'Cypherspot <do_not_reply@pay-me.fly.dev>', [emailto])
     email.content_subtype = "html"
 
     file = open(file_path, 'rb')
@@ -250,31 +250,20 @@ def process(request, dept):
                 if float(amount_paid) >= float(amount_to_pay) :
                     user = Student.objects.get(matric_no=matric)
                     pup = user.purpose
-                    all_due0 = ["BASIC DUES", "CONFERENCE", "DINNER"]
-                    all_due1 = ["BASIC DUES", "CONFERENCE"]
-                    all_due2 = ["BASIC DUES", "DINNER"]
-                    all_due3 = ["CONFERENCE", "DINNER"]
-                    all_due4 = ["BASIC DUES (2021/2022)", "BASIC DUES", "CONFERENCE", "DINNER"]
 
-                    if all(x in pup for x in all_due4):
-                        user.paid_basic = user._paid_basic = user._paid_conference = user._paid_dinner = True
-                    elif all(x in pup for x in all_due0):
-                        user._paid_basic = user._paid_conference = user._paid_dinner = True
-                    elif all(x in pup for x in all_due1):
-                        user._paid_basic = user._paid_conference = True
-                    elif all(x in pup for x in all_due2):
-                        user._paid_basic = user._paid_dinner = True
-                    elif all(x in pup for x in all_due3):
-                        user._paid_dinner = user._paid_conference = True
-                    elif pup == "BASIC DUES":
-                        user._paid_basic = True
-                    elif pup == "CONFERENCE":
-                        user._paid_conference = True
-                    elif pup == "DINNER":
-                        user._paid_dinner = True
-                    elif pup == "BASIC DUES (2021/2022)":
-                        user.paid_basic = True
-                    
+                    # Dictionary to map dues to their corresponding attributes
+                    dues_attributes = {
+                        "BASIC DUES": "_paid_basic",
+                        "BASIC_DUES(2021/2022)": "paid_basic",
+                        "CONFERENCE": "_paid_conference",
+                        "DINNER": "_paid_dinner",
+                    }
+
+                    # Iterate through the purposes and set the corresponding attributes to True if they're in `pup`
+                    for due, attr in dues_attributes.items():
+                        if due in pup:
+                            setattr(user, attr, True)
+
                     user.paid_date = datetime.datetime.now()
                     user.ref = reference
                     user.save()
